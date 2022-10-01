@@ -1,0 +1,66 @@
+# Image Input/Output
+# ----------------------------------------------------------------------------------------------
+in_channels: 3
+num_classes: 2
+height: 240 # h=128 w=128 for PHR experiment patch size = height = width
+width: 320
+
+# Training
+# ----------------------------------------------------------------------------------------------
+# mnet = fapnet, unet, fapnet, ex_mnet, dncnn, u2net, vnet, unet++, sm_unet, sm_linknet, sm_fpn, sm_pspnet, kuc_vnet, kuc_unet3pp, kuc_r2unet, kuc_unetpp, kuc_restunet, kuc_tensnet, kuc_swinnet, kuc_u2net, kuc_attunet, ad_unet, transformer
+model_name: unet
+batch_size: 10 #64 
+epochs: 3000
+learning_rate: !!float 3e-4
+val_plot_epoch: 10
+augment: False
+transfer_lr: False
+gpu: !!str 2
+
+# Experiment Setup
+# ----------------------------------------------------------------------------------------------
+# regular/cls_balance/patchify/patchify_WOC
+# cfr = regular, cfr_cb = cls_balance, phr = patchify, phr_cb = patchify_WOC
+experiment: phr_cb #phr_cb_void
+
+# Patchify (phr & phr_cb experiment)
+# ----------------------------------------------------------------------------------------------
+patchify: True
+patch_class_balance: True # whether to use class balance while doing patchify
+patch_size: 240 # height = width, anyone is suitable
+stride: 60
+p_train_dir: json/train_patch_phr_cb_240.json
+p_valid_dir: json/valid_patch_phr_cb_240.json
+p_test_dir: json/test_patch_phr_cb_240.json
+
+# Dataset
+# --------------------------------mask--------------------------------------------------------------
+weights: False # False if cfr, True if cfr_cb
+balance_weights: [1.0, 9.0, 0.0] #[1.4, 8.6,] # cfr_cb experiment
+dataset_dir: /home/mdsamiul/github_project/video_background_subtraction/data/
+root_dir: /home/mdsamiul/github_project/video_background_subtraction/
+train_size: 0.8
+train_dir: train.csv
+valid_dir: valid.csv
+test_dir: test.csv
+
+# Logger/Callbacks
+# ----------------------------------------------------------------------------------------------
+csv: True
+val_pred_plot: True
+lr: True
+tensorboard: True
+early_stop: False
+checkpoint: True
+patience: 300 # required for early_stopping, if accuracy does not change for 500 epochs, model will stop automatically
+
+# Evaluation
+# ----------------------------------------------------------------------------------------------
+#load_model_name : m.hdf5
+load_model_name: unet_ex_phr_cb_ep_3000_27-Sep-22.hdf5 #unet_ex_phr_cb_void_ep_3000_28-Sep-22.hdf5 
+load_model_dir: None
+
+# Prediction Plot
+# ----------------------------------------------------------------------------------------------
+plot_single: True # if True, then only index x_test image will plot
+index: -1 #170 # by default -1 means random image else specific index image provide by user
