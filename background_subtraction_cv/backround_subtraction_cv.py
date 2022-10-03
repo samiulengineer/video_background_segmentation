@@ -1,5 +1,6 @@
 import os
 import cv2
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -27,6 +28,7 @@ def saveImg(imgs, imgName):
     for img, ax, ti in zip(imgs, axs, titles):
         ax.imshow(img, cmap='gray')
         ax.set_title(ti)
+        ax.axis('off')
 
     fig.tight_layout()
     plt.savefig(imgName, bbox_inches='tight', dpi=800)
@@ -65,14 +67,19 @@ def gaussian(img):
 
 
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dataset_dir")
+    args = parser.parse_args()
+    args = vars(args)
+    
+    directory = args["dataset_dir"]  # Input directory
+    
+    background = capBackgroud(directory)    # Capturing Background Image using median method
 
-    directory = "/home/mdsamiul/github_project/video_background_subtraction/data/highway/input"
-
-    # Capturing Background Image using median method
-    background = capBackgroud(directory)
-
-    # creating output directory
-    outDir = "/home/mdsamiul/github_project/video_background_subtraction/background_subtraction_cv/output"
+    outDir = "/home/mdsamiul/github_project/video_background_segmentation/background_subtraction_cv/output" # Output directory
+    
+    # check and create output directory
     if not os.path.exists(outDir):
         os.makedirs(outDir)
 
@@ -86,10 +93,9 @@ if __name__ == "__main__":
             # Applying opening technique (erosion followed by dilation)
             openingImg = opening(bw_img)
             openingImg2 = opening(openingImg)
-            # Gaussian
-            # gaussianImg = gaussian(openingImg)
 
             imgName = outDir + "/" + i  # figure name
+            
             # save figure in output directory
             saveImg([img, background, subBack, bw_img,
                     openingImg, openingImg2], imgName)

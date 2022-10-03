@@ -64,9 +64,9 @@ def read_img(directory, in_channels=None, label=False, patch_idx=None, height=25
         mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
         #mask = cv2.threshold(mask, 200, 255, cv2.THRESH_BINARY)
         #mask[mask == 0] = 0
-        #mask[(mask > 0) & (mask < 255)] = 1
-        mask[mask < 255] = 0
-        mask[mask == 255] = 1
+        mask[(mask > 0) & (mask < 255)] = 1
+        #mask[mask < 255] = 0
+        mask[mask == 255] = 2
         if patch_idx:
             # extract patch from original mask
             return mask[patch_idx[0]:patch_idx[1], patch_idx[2]:patch_idx[3]]
@@ -139,23 +139,37 @@ def data_path_split(config):
     images = []
     masks = []
 
-    for i in directories:
-        fileDir = data_path + i 
-        if os.path.isdir(fileDir):
-            image_path = fileDir + "/input"
-            mask_path = fileDir + "/groundtruth"
-            image_names = os.listdir(image_path)
-            image_names = sorted(image_names)
-            mask_names = os.listdir(mask_path)
-            mask_names = sorted(mask_names)
+    if config["single_dir"] == "any":
+        for i in directories:
+            fileDir = data_path + i 
+            if os.path.isdir(fileDir):
+                image_path = fileDir + "/input"
+                mask_path = fileDir + "/groundtruth"
+                image_names = os.listdir(image_path)
+                image_names = sorted(image_names)
+                mask_names = os.listdir(mask_path)
+                mask_names = sorted(mask_names)
 
-            for i in image_names:
-                images.append(image_path + "/" + i)
-            for i in mask_names:
-                masks.append(mask_path + "/" + i)
+                for i in image_names:
+                    images.append(image_path + "/" + i)
+                for i in mask_names:
+                    masks.append(mask_path + "/" + i)
+    else:
+        for i in directories:
+            fileDir = data_path + i 
+            if os.path.isdir(fileDir) and i == config["single_dir"]:
+                image_path = fileDir + "/input"
+                mask_path = fileDir + "/groundtruth"
+                image_names = os.listdir(image_path)
+                image_names = sorted(image_names)
+                mask_names = os.listdir(mask_path)
+                mask_names = sorted(mask_names)
 
-    # images = images[471:]
-    # masks = masks[471:]
+                for i in image_names:
+                    images.append(image_path + "/" + i)
+                for i in mask_names:
+                    masks.append(mask_path + "/" + i)
+
     x_train, y_train, x_valid, y_valid, x_test, y_test = data_split(
         images, masks, config)
 

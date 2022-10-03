@@ -1,8 +1,8 @@
 # Image Input/Output
 # ----------------------------------------------------------------------------------------------
 in_channels: 3
-num_classes: 2
-height: 240 # h=128 w=128 for PHR experiment patch size = height = width
+num_classes: 3
+height: 240 #for PHR-CB experiment patch size = height = width
 width: 320
 
 # Training
@@ -25,7 +25,7 @@ experiment: phr_cb #phr_cb_void
 
 # Patchify (phr & phr_cb experiment)
 # ----------------------------------------------------------------------------------------------
-patchify: True
+patchify: False
 patch_class_balance: True # whether to use class balance while doing patchify
 patch_size: 240 # height = width, anyone is suitable
 stride: 60
@@ -35,14 +35,15 @@ p_test_dir: json/test_patch_phr_cb_240.json
 
 # Dataset
 # --------------------------------mask--------------------------------------------------------------
-weights: False # False if cfr, True if cfr_cb
+weights: True # False if cfr, True if cfr_cb
 balance_weights: [1.0, 9.0, 0.0] #[1.4, 8.6,] # cfr_cb experiment
-dataset_dir: /home/mdsamiul/github_project/video_background_subtraction/data/
-root_dir: /home/mdsamiul/github_project/video_background_subtraction/
+dataset_dir: /home/mdsamiul/github_project/video_background_segmentation/data/
+root_dir: /home/mdsamiul/github_project/video_background_segmentation/
 train_size: 0.8
 train_dir: train.csv
 valid_dir: valid.csv
 test_dir: test.csv
+single_dir : any    # if 'any' then take all dataset but if given any specific folder name then take only that folder
 
 # Logger/Callbacks
 # ----------------------------------------------------------------------------------------------
@@ -57,7 +58,7 @@ patience: 300 # required for early_stopping, if accuracy does not change for 500
 # Evaluation
 # ----------------------------------------------------------------------------------------------
 #load_model_name : m.hdf5
-load_model_name: unet_ex_phr_cb_ep_3000_27-Sep-22.hdf5 #unet_ex_phr_cb_void_ep_3000_28-Sep-22.hdf5 
+load_model_name:  unet_ex_phr_cb_void_ep_3000_28-Sep-22.hdf5 
 load_model_dir: None
 
 # Prediction Plot

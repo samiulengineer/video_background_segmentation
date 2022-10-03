@@ -21,12 +21,15 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--root_dir")
 parser.add_argument("--dataset_dir")
 parser.add_argument("--model_name")
-parser.add_argument("--epochs")
-parser.add_argument("--batch_size")
-parser.add_argument("--index")
+parser.add_argument("--epochs", type=int)
+parser.add_argument("--batch_size", type=int)
+parser.add_argument("--index", type=int)
 parser.add_argument("--experiment")
 parser.add_argument("--patchify")
-parser.add_argument("--patch_size")
+parser.add_argument("--patch_size", type=int)
+parser.add_argument("--height", type=int)
+parser.add_argument("--width", type=int)
+parser.add_argument("--single_dir")
 parser.add_argument("--weights")
 parser.add_argument("--patch_class_balance")
 
@@ -35,7 +38,7 @@ args = parser.parse_args()
 
 # Set up train configaration
 # ----------------------------------------------------------------------------------------------
-config = get_config_yaml('project/config.yaml', vars(args))  # change by Rahat
+config = get_config_yaml('project/config.yaml', vars(args)) 
 create_paths(config)
 
 # Print Experimental Setup before Training
