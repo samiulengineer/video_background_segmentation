@@ -42,23 +42,28 @@ Before start training check the variable inside config.yaml. Keep the above ment
 --data
     --busStation
         --groundtruth
-            --gt000001.png
-            --gt000002.png
-                --
         --input
-            --in000001.png
-            --gin000002.png
-                --
     --canoe
         --groundtruth
-            --gt000001.png
-            --gt000002.png
-                --
         --input
-            --in000001.png
-            --gin000002.png
-                --
-    --
+    --fountain02
+        --groundtruth
+        --input
+    --sidewalk
+        --groundtruth
+        --input
+    --office
+        --groundtruth
+        --input
+    --park
+        --groundtruth
+        --input
+    --highway
+        --groundtruth
+        --input
+    --peopleInShade
+        --groundtruth
+        --input    
 ```
 
 ## Experiments for Computer Vision Technique
@@ -83,7 +88,9 @@ When you run the following code based on different experiments, some new directo
 3. model (save model checkpoint)
 4. prediction (validation and test prediction png format)
 
-- **Comprehensive Full Resolution with Class Balance (CFR-CB)**: This experiment is for training the models on the frames collected from a single video. The dataset contains eight different folders. To run this experiment, you need to specify the folder name.
+- **Trained on a Single Dataset**: This experiment is for training the models on the frames collected from a single video. The dataset contains eight different folders. To run this experiment, you need to specify the folder name.
+
+<FOLDER_NAME> = Or(fountain02, sidewalk, office, busStation, park, highway, canoe, peopleInShade)
 
 ```
 python project/train.py --root_dir YOUR_ROOT_DIR \
@@ -92,13 +99,13 @@ python project/train.py --root_dir YOUR_ROOT_DIR \
     --epochs 10 \
     --batch_size 10 \
     --index -1 \
-    --experiment cfr_cb \
+    --experiment single_data \
     --height 240 \
     --width 320 \
-    --single_dir FOLDER_NAME
+    --single_dir <FOLDER_NAME>
 ```
 
-- **Patchify Half Resolution with Class Balance (PHR-CB)**: This experiment is for training the models on the whole dataset.
+- **Trained on a Multiple Dataset**: This experiment is for training the models on the whole dataset.
 
 ```
 python project/train.py --root_dir YOUR_ROOT_DIR \
@@ -107,14 +114,14 @@ python project/train.py --root_dir YOUR_ROOT_DIR \
     --epochs 10 \
     --batch_size 64 \
     --index -1 \
-    --experiment phr_cb \
+    --experiment multiple data \     
     --patchify True \
     --patch_size 240 
 ```
 
 ## Testing
 
-- **CFR-CB Experiment**
+- **Test on a Single Dataset**
 
 Run following model for evaluating train model on test dataset.
 
@@ -127,10 +134,10 @@ python project/test.py \
     --index -1 \
     --height 240 \
     --width 320 \
-    --experiment cfr_cb \
+    --experiment single_data \
 ```
 
-- **PHR-CB Experiment**
+- **Test on a Multiple Dataset**
 
 ```
 python project/test.py \
@@ -141,5 +148,5 @@ python project/test.py \
     --index -1 \
     --patchify True \
     --patch_size 240 \
-    --experiment phr_cb 
+    --experiment Multiple Dataset \ 
 ```
