@@ -1,10 +1,10 @@
-# Video Background Subtraction
+# **Video Background Subtraction**
 
-## Introduction
+## **Introduction**
 
 Creating a foreground mask, which is a binary picture of the pixels that belong to moving elements in the scene, can be done with still cameras by using a technique known as background subtraction (BS), which is a common and commonly used method. In this study, we will show a video subtraction pipeline that makes use of both computer vision and deep learning techniques.
 
-## Dataset
+## **Dataset**
 
 The dataset is CDNET can be downloaded from [here](http://jacarini.dinf.usherbrooke.ca/dataset2014). This dataset contains 11 video categories with 4 to 6 videos sequences in each category. However, we only used 8 video sequeces. They are: busStation, canoe, fountain02, highway, office, park, peopleInShade, sidewalk. Each individual video file (.zip or .7z) can be downloaded separately. Alternatively, all videos files within one category can be downloaded as a single .zip or .7z file. Each video file when uncompressed becomes a directory which contains the following:
 
@@ -22,7 +22,7 @@ The groundtruth images contain 5 labels namely
 - 170 : Unknown motion (usually around moving objects, due to semi-transparency and motion blur)
 - 255 : Motion
 
-## Setup
+## **Environment Setup**
 
 First clone the github repo in your local or server machine by following:
 
@@ -66,7 +66,13 @@ Before start training check the variable inside config.yaml. Keep the above ment
         --input    
 ```
 
-## Experiments for Computer Vision Technique
+------
+------
+------
+_
+
+
+# **Experiments (Computer Vision)**
 
 After setting up the required folders and packages, run the following experiment. The experiment is based on a combination of parameters passing through `argparse`. There are eight folders in the data directory. You need to provide a path to any single folder's input directory.
 
@@ -77,7 +83,17 @@ python background_subtraction_cv/backround_subtraction_cv.py \
     --dataset_dir YOUR_DATASET_DIR/input
 ```
 
-## Experiments for Deep Learning Approach
+## **Results (Computer Vision)**
+
+![Alternate text](/readme/bg_subplot.jpg)
+
+
+----
+----
+----
+_
+
+# **Experiments (Deep Learning)**
 
 After setup the required folders and package run one of the following experiment. There are two experiments based on combination of parameters passing through `argparse` and `config.yaml`. Combination of each experiments given below.
 
@@ -88,9 +104,11 @@ When you run the following code based on different experiments, some new directo
 3. model (save model checkpoint)
 4. prediction (validation and test prediction png format)
 
-- **Trained on a Single Dataset**: This experiment is for training the models on the frames collected from a single video. The dataset contains eight different folders. To run this experiment, you need to specify the folder name.
+## **Trained on a Single Dataset**
 
-<FOLDER_NAME> = Or(fountain02, sidewalk, office, busStation, park, highway, canoe, peopleInShade)
+This experiment is for training the models on the frames collected from a single video. The dataset contains eight different folders. To run this experiment, you need to specify the folder name.
+
+<FOLDER_NAME> = OR (fountain02, sidewalk, office, busStation, park, highway, canoe, peopleInShade)
 
 ```
 python project/train.py --root_dir YOUR_ROOT_DIR \
@@ -105,23 +123,7 @@ python project/train.py --root_dir YOUR_ROOT_DIR \
     --single_dir <FOLDER_NAME>
 ```
 
-- **Trained on a Multiple Dataset**: This experiment is for training the models on the whole dataset.
-
-```
-python project/train.py --root_dir YOUR_ROOT_DIR \
-    --dataset_dir YOUR_ROOT_DIR/data/ \
-    --model_name unet \
-    --epochs 10 \
-    --batch_size 64 \
-    --index -1 \
-    --experiment multiple data \     
-    --patchify True \
-    --patch_size 240 
-```
-
-## Testing
-
-- **Test on a Single Dataset**
+## **Testing on a single dataset ("highway")**
 
 Run following model for evaluating train model on test dataset.
 
@@ -137,7 +139,35 @@ python project/test.py \
     --experiment single_data \
 ```
 
-- **Test on a Multiple Dataset**
+## **Prediction Result in "highway" dataeset (no.1000 frame)**
+
+![Alternate text](/readme/1000frames.png)
+
+
+--------------
+--------------
+--------------
+_
+
+# **Trained on a Multiple Dataset**
+
+This experiment is for training the models on the whole dataset.
+
+```
+python project/train.py --root_dir YOUR_ROOT_DIR \
+    --dataset_dir YOUR_ROOT_DIR/data/ \
+    --model_name unet \
+    --epochs 10 \
+    --batch_size 64 \
+    --index -1 \
+    --experiment multiple data \     
+    --patchify True \
+    --patch_size 240 
+```
+
+
+
+## **Test on a Multiple Dataset (8 Different Scenerios)**
 
 ```
 python project/test.py \
@@ -150,3 +180,23 @@ python project/test.py \
     --patch_size 240 \
     --experiment Multiple Dataset \ 
 ```
+
+
+## **Prediction Result from 8 different Scenerios**
+
+busStation dataset
+![Alternate text](/readme/busStation.jpg)
+canoe dataset
+![Alternate text](/readme/canoe.png)
+fountain02 dataset
+![Alternate text](/readme/fountain02.png)
+highway dataset
+![Alternate text](/readme/highway.jpg)
+office dataset
+![Alternate text](/readme/office.jpg)
+park dataset
+![Alternate text](/readme/park.png)
+peopleInShade dataset
+![Alternate text](/readme/peopleInShade.jpg)
+sidewalk dataset
+![Alternate text](/readme/sidewalk.jpg)
