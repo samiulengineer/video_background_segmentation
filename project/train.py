@@ -39,7 +39,7 @@ args = parser.parse_args()
 # Set up train configaration
 # ----------------------------------------------------------------------------------------------
 config = get_config_yaml('project/config.yaml', vars(args)) 
-create_paths(config)
+create_paths(config, test = False)
 
 # Print Experimental Setup before Training
 # ----------------------------------------------------------------------------------------------
